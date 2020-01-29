@@ -147,7 +147,7 @@ public class LoginVerify extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.btn_login:{
-                showToast("loginclick");
+                //showToast("loginclick");
                 loginAccount();
                 break;
             }
@@ -181,7 +181,7 @@ public class LoginVerify extends AppCompatActivity implements View.OnClickListen
             @Override
             public void onSuccess(UserAccountState userAccountState) {
                 showToast("login,Success");
-                Intent intent = new Intent(LoginVerify.this,MainActivity.class);
+                Intent intent = new Intent(LoginVerify.this,ControlActivity.class);
                 startActivity(intent);
             }
 

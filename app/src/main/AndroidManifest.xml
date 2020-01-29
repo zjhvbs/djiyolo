@@ -79,6 +79,8 @@
             android:screenOrientation="landscape"></activity>
         <activity android:name=".LoginVerify"
             android:screenOrientation="portrait"></activity>
+        <activity android:name=".ControlActivity"
+            android:screenOrientation="landscape"></activity>
     </application>
 
 </manifest>
