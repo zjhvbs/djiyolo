@@ -253,7 +253,7 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.btn_open:{
-                Intent intent = new Intent(this,LoginVerify.class);
+                Intent intent = new Intent(this,JoystickControalActivity.class);
                 startActivity(intent);
                 break;
             }

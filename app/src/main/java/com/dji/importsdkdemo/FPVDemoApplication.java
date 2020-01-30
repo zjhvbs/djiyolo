@@ -146,4 +146,12 @@ class FPVDemoApplication extends Application {
         }
         return camera;
     }
+    //虚拟摇杆用的函数
+    public static synchronized Aircraft getAircraftInstance() {
+        if (!isAircraftConnected()) return null;
+        return (Aircraft) getmProductInstance();
+    }
+    public static boolean isAircraftConnected() {
+        return getmProductInstance() != null && getmProductInstance() instanceof Aircraft;
+    }
 }

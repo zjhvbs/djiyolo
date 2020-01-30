@@ -81,6 +81,8 @@
             android:screenOrientation="portrait"></activity>
         <activity android:name=".ControlActivity"
             android:screenOrientation="landscape"></activity>
+        <activity android:name=".JoystickControalActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
