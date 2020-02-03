@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,10 @@ import dji.sdk.products.Aircraft;
 
 /*
 虚拟摇杆的测试代码
+
+在以下四个模式下：参数的解释为：
+mPitch :正数为右，负数为左。
+mRoll：正数为前，负数为后。
 
  */
 public class JoystickControalActivity extends Activity implements View.OnClickListener {
@@ -185,6 +190,12 @@ public class JoystickControalActivity extends Activity implements View.OnClickLi
                     mSendVirtualStickDataTimer = new Timer();
                     mSendVirtualStickDataTimer.schedule(mSendVirtualStickDataTask, 100, 200);
                 }
+                /**
+                *schedule
+                 *  第一参数TimerTask 类，在包：import java.util.TimerTask .使用者要继承该类，并实现 public void run() 方法，因为 TimerTask 类实现了 Runnable 接口。
+                 *第二参数 调用后延迟多长时间调用方法
+                 * 第三参数 每隔多长时间调用方法
+                 * */
             }
         });
         mScreenJoystickRight.setJoystickListener(new OnScreenJoystickListener() {
@@ -260,6 +271,7 @@ public class JoystickControalActivity extends Activity implements View.OnClickLi
                 }
                 break;
             case R.id.btn_land:
+                final boolean confirland = true;
                 if (mFlightController != null){
 
                     mFlightController.startLanding(
@@ -268,12 +280,38 @@ public class JoystickControalActivity extends Activity implements View.OnClickLi
                                 public void onResult(DJIError djiError) {
                                     if (djiError != null) {
                                         showToast(djiError.getDescription());
+
                                     } else {
+
                                         showToast("Start Landing");
+                                        mFlightController.confirmLanding(new CommonCallbacks.CompletionCallback() {
+                                            @Override
+                                            public void onResult(DJIError djiError) {
+                                                if (djiError != null) {
+                                                    showToast(djiError.getDescription());
+                                                } else {
+                                                    showToast("Landing success ");
+                                                }
+
+                                            }
+                                        });
                                     }
                                 }
                             }
                     );
+                    /*
+                    if (confirland)
+                    mFlightController.confirmLanding(new CommonCallbacks.CompletionCallback() {
+                        @Override
+                        public void onResult(DJIError djiError) {
+                            if (djiError != null) {
+                                showToast(djiError.getDescription());
+                            } else {
+                                showToast("Landing success ");
+                            }
+
+                        }
+                    });*/
 
                 }
                 break;
@@ -318,6 +356,13 @@ public class JoystickControalActivity extends Activity implements View.OnClickLi
     }
 
     private void showToast(final String s) {
+        Handler mhandle = new Handler(Looper.getMainLooper());
+        mhandle.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(JoystickControalActivity.this,s,Toast.LENGTH_LONG).show();
+            }
+        });
 
     }
 

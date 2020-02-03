@@ -205,5 +205,27 @@
         android:layout_below="@id/signal"
         custom:excludeItem="ESCStatus"
         android:visibility="gone"/>
+    <com.dji.importsdkdemo.OnScreenJoystick
+        android:id="@+id/directionJoystickRight"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="40dp"
+        android:layout_toRightOf="@+id/CameraCapturePanel"
+        android:background="@mipmap/joystick_bg"/>
+
+    <com.dji.importsdkdemo.OnScreenJoystick
+        android:id="@+id/directionJoystickLeft"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="40dp"
+        android:layout_toLeftOf="@+id/Compass"
+        android:background="@mipmap/joystick_bg"
+        tools:ignore="NotSibling" />
 
 </RelativeLayout>
