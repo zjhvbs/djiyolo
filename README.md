@@ -1,2 +1,0 @@
-# DJI_self
-DJI
