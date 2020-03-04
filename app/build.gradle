@@ -10,6 +10,15 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk{
+            abiFilters "arm64-v8a","armeabi-v7a","x86","x86_64"
+        }
+
+    }
+    sourceSets{
+        main{
+            jniLibs.srcDirs = ['src/main/jniLibs']
+        }
     }
     packagingOptions{
         doNotStrip "*/*/libdjivideo.so"
@@ -43,6 +52,7 @@ dependencies {
     implementation ('com.dji:dji-sdk:4.11')
     compileOnly ('com.dji:dji-sdk-provided:4.11')
     implementation ('com.dji:dji-uxsdk:4.11')
+    implementation project(path: ':OpenCV4')
 
 
 }
