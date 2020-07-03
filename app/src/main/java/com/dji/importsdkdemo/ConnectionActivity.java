@@ -30,11 +30,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import dji.common.error.DJIError;
 import dji.common.error.DJISDKError;
+import dji.common.useraccount.UserAccountState;
+import dji.common.util.CommonCallbacks;
 import dji.sdk.base.BaseComponent;
 import dji.sdk.base.BaseProduct;
 import dji.sdk.products.Aircraft;
 import dji.sdk.sdkmanager.DJISDKInitEvent;
 import dji.sdk.sdkmanager.DJISDKManager;
+import dji.sdk.useraccount.UserAccountManager;
 
 public class ConnectionActivity extends Activity implements View.OnClickListener{
     private TextView mTextConnectionStatus;
@@ -48,7 +51,8 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
     private TextView mTextProduct;
     private TextView mVersionTv;
     private Button mBtnOpen;
-    private Button mBtnyolo;
+    private Button mBtnlogin;
+    private Button mBtnlogout;
 
 
     private static final String TAG = ConnectionActivity.class.getName();
@@ -98,12 +102,20 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
         mTextConnectionStatus = (TextView) findViewById(R.id.text_connection_status);
         mTextProduct = (TextView) findViewById(R.id.text_product_info);
         mBtnOpen = (Button) findViewById(R.id.btn_open);
-        mBtnyolo = findViewById(R.id.btn_yolo);
-        mBtnyolo.setOnClickListener(this);
+
+
         mBtnOpen.setOnClickListener(this);
+
         mBtnOpen.setEnabled(false);
+
         mVersionTv = (TextView) findViewById(R.id.textView2);
         mVersionTv.setText(getResources().getString(R.string.sdk_version, DJISDKManager.getInstance().getSDKVersion()));
+        mBtnlogin=(Button)findViewById(R.id.btn_login);
+        mBtnlogout = findViewById(R.id.btn_logout);
+        mBtnlogin.setOnClickListener(this);
+        mBtnlogout.setOnClickListener(this);
+        mBtnlogin.setEnabled(false);
+        mBtnlogout.setEnabled(false);
         Toast.makeText(this,"开始广播",Toast.LENGTH_LONG).show();
 
     }
@@ -114,15 +126,17 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
         showToast("asdasdasdasdasdasdasdasd");
         if (mProduct !=null && mProduct.isConnected()){
             mBtnOpen.setEnabled(true);
+            mBtnlogin.setEnabled(true);
+            mBtnlogout.setEnabled(true);
             String str = mProduct instanceof Aircraft ? "DJIAircaft" :"DJIHandHeld";
-            mTextConnectionStatus.setText("Status"+str+"connect");
+            mTextConnectionStatus.setText("Status"+str+"已连接");
             if (null != mProduct.getModel()){
                 mTextProduct.setText(' '+mProduct.getModel().getDisplayName());
             }else{
                 mTextProduct.setText("Product information");
             }
         }else {
-            showToast("没有刷新成功");
+
             mBtnOpen.setEnabled(false);
             mTextProduct.setText(R.string.product_information);
             mTextConnectionStatus.setText(R.string.connection_loose);
@@ -253,20 +267,58 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
             showToast("Missing permissions!!!");
         }
     }
+    private void logoutAccount() {
+        UserAccountManager.getInstance().logoutOfDJIUserAccount(new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(DJIError djiError) {
+                if (null ==djiError){
+                    showToast("logout,success");
+
+                }else{
+                    showToast("logout,error"+ djiError.getDescription());
+                }
+            }
+        });
+
+    }
+
+    private void loginAccount() {
+        UserAccountManager.getInstance().logIntoDJIUserAccount(this, new CommonCallbacks.CompletionCallbackWith<UserAccountState>() {
+            @Override
+            public void onSuccess(UserAccountState userAccountState) {
+                showToast("login,Success");
+                Intent intent = new Intent(ConnectionActivity.this,MainActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(DJIError djiError) {
+                showToast("login,Fauile"+djiError.getDescription());
+            }
+        });
+    }
+
 
     @Override
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.btn_open:{
-                Intent intent = new Intent(this,ControlActivity.class);
+                Intent intent = new Intent(ConnectionActivity.this,MainActivity.class);
                 startActivity(intent);
+
                 break;
             }
-            case R.id.btn_yolo:{
-                Intent intent = new Intent(this, Yolo.class);
-                startActivity(intent);
+            case R.id.btn_login:{
+                loginAccount();
+                break;
+
+            }
+            case R.id.btn_logout:{
+                logoutAccount();
                 break;
             }
+
+
             default:
                 break;
         }
@@ -275,6 +327,7 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
     @Override
     public void onPause() {
         Log.e(TAG, "onPause");
+
         super.onPause();
     }
 
@@ -293,6 +346,9 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
     @Override
     public void onResume() {
         Log.e(TAG, "onResume");
+        Intent intent = new Intent();
+        intent.setAction(FPVDemoApplication.FLAG_CONNECT_CHANGE);
+        sendBroadcast(intent);
         super.onResume();
     }
 

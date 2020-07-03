@@ -132,21 +132,6 @@
         android:background="@color/transparent"
         android:layout_height="20dp"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:padding="12dp">
-
-        <dji.ux.widget.dashboard.DashboardWidget
-            android:id="@+id/Compass"
-            android:layout_width="405dp"
-            android:layout_height="91dp"
-            android:layout_marginRight="12dp"
-            tools:ignore="RtlHardcoded"/>
-
-    </LinearLayout>
 
 
     <!--Take off and return home buttons on left -->
@@ -162,10 +147,7 @@
             android:layout_height="40dp"
             android:layout_marginBottom="12dp"/>
 
-        <dji.ux.widget.ReturnHomeWidget
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="12dp"/>
+
     </LinearLayout>
 
 
@@ -200,7 +182,7 @@
 
     <!-- Pre-flight checklist panel -->
     <dji.ux.panel.PreFlightCheckListPanel
-        android:layout_width="400dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/signal"
         custom:excludeItem="ESCStatus"
@@ -224,7 +206,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="30dp"
         android:layout_marginRight="40dp"
-        android:layout_toLeftOf="@+id/Compass"
+
         android:background="@mipmap/joystick_bg"
         tools:ignore="NotSibling" />
 

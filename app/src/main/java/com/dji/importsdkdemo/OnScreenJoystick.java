@@ -51,7 +51,7 @@ public class OnScreenJoystick extends SurfaceView implements
     private int mKnobSize;
     private int mBackgroundSize;
     private float mRadius;
-
+    int isrunning = 1;
     private OnScreenJoystickListener mJoystickListener;
 
     private boolean mAutoCentering = true;
@@ -86,14 +86,14 @@ public class OnScreenJoystick extends SurfaceView implements
     private void init() {
         mHolder = getHolder();
         mHolder.addCallback(this);
-
         mThread = new JoystickThread();
-
         setZOrderOnTop(true);
         mHolder.setFormat(PixelFormat.TRANSPARENT);
         setOnTouchListener(this);
         setEnabled(true);
         setAutoCentering(true);
+
+
     }
 
     public void setAutoCentering(final boolean pAutoCentering) {
@@ -118,8 +118,10 @@ public class OnScreenJoystick extends SurfaceView implements
 
     @Override
     public void surfaceCreated(final SurfaceHolder arg0) {
+//        if(isrunning ==1) {
+//            mThread.start();
+//        }
         mThread.start();
-
     }
 
     @Override
@@ -200,6 +202,7 @@ public class OnScreenJoystick extends SurfaceView implements
         public synchronized void start() {
             running = true;
             super.start();
+            isrunning =0;
         }
 
         public void setRunning(final boolean pRunning) {

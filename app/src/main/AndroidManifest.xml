@@ -77,12 +77,17 @@
         </activity>
         <activity android:name=".MainActivity"
             android:screenOrientation="landscape"></activity>
-        <activity android:name=".LoginVerify"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".ControlActivity"
+        <activity android:name=".YoloMediaActivity"
             android:screenOrientation="landscape"></activity>
+        <activity android:name=".ControlActivity"
+            android:screenOrientation="landscape">
+        </activity>
         <activity android:name=".JoystickControalActivity"
             android:screenOrientation="portrait"></activity>
+        <activity android:name=".VideoProgress"
+            android:screenOrientation="landscape"
+            android:configChanges="orientation|screenSize"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
     </application>
 
 </manifest>
